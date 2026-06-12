@@ -11,8 +11,17 @@
 
 </head>
 <body>
+<button id="menuToggle" class="menu-btn">☰</button>
+
+<div id="sidebar" class="sidebar">
+  <h3>Departments</h3>
+  <button onclick="switchDepartment('cargo')">Cargo</button>
+  <button onclick="switchDepartment('reservations')">Reservations</button>
+</div>
+
     
 <h1>Productivity Counter</h1>
+<h2 id="currentDepartment" class="subtitle"></h2>
 <p id="currentDate"></p>
 
   <div class="container">
