@@ -1,0 +1,556 @@
+body,
+.card,
+button,
+input,
+textarea,
+select,
+.sidebar,
+.progress-bar {
+    transition:
+        background-color .25s ease,
+        color .25s ease,
+        border-color .25s ease;
+}
+
+
+/* Global */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 20px 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Layout */
+.container {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Card */
+.card {
+  background: white;
+  padding: 12px 16px;
+  border: 1px solid #D3D3D3;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card span:first-child {
+  font-weight: bold;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Counter */
+.counter {
+  font-size: 22px;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Buttons */
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #0078D4;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #005a9e;
+}
+
+.decrement-btn {
+  background: #e9ecef;
+  color: #333;
+}
+
+.decrement-btn:hover {
+  background: #dee2e6;
+}
+
+/* Reset button */
+.reset-btn {
+  padding: 20px;
+  background: #d83b01;
+  width: 100%;
+}
+
+.reset-btn:hover {
+  background: #a62d00;
+}
+
+/* Sidebar */
+.menu-button {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+
+  font-size: 22px;
+  background: none;
+  color: #333;
+  border: none;
+}
+
+.menu-button:hover {
+  color: #0078D4;
+  background: transparent;
+  transform: scale(1.1);
+}
+
+.menu-button.hidden {
+  display: none;
+}
+
+.menu-button:focus {
+  outline: solid 1px;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -220px;
+  width: 200px;
+  height: 100%;
+  background: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  transition: left 0.3s;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar button {
+  width: 100%;
+  margin: 5px 0;
+  text-align: left;
+  padding: 15px 20px;
+}
+
+.sidebar-tools button {
+  width: 100%;
+  margin: 5px 0;
+  text-align: left;
+}
+
+.sidebar-tools {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.sidebar-tools i{
+  margin: 0 5px;
+}
+
+.sidebar-tools::before {
+  content: "";
+  display: block;
+  margin-bottom: 24px;
+  border-top: 1px solid #e5e5e5;
+}
+
+
+/* Collapse button */
+.collapse-btn {
+  background: #dee2e6;
+  color: #333;
+  width: 100%;
+  margin-bottom: 15px;
+  border: solid #adb5bd 1px;
+}
+
+.collapse-btn:hover {
+  background: #adb5bd;
+}
+
+
+
+/* Text */
+.subtitle {
+  margin-top: -10px;
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 16px;
+}
+
+#currentDate {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+.backup-btn {
+  background: #3db838; 
+  padding: 20px;
+}
+
+.backup-btn:hover {
+  background: #36a131;
+}
+
+.restore-btn {
+  background: #f7630c; 
+  padding: 20px;
+}
+
+.restore-btn:hover {
+  background: #d35400;
+}
+
+.saved-info {
+  font-size: 13px;
+  color: #888;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+
+.progress-section {
+  width: 350px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #D3D3D3;
+  background: #e5e5e5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#progressFill  {
+  height: 100%;
+  width: 0%;
+  background: #107c10;
+  transition: width 0.3s ease;
+}
+
+#progressPercent {
+    margin: 12px 0 4px 0;
+
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+
+    color: #333;
+}
+
+#minutesProduced {
+    margin: 0;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #777;
+    letter-spacing: 0.3px;
+}
+
+/* Layout */
+
+.app-layout {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.main-content {
+    width: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content h1 {
+    margin-bottom: 5px;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    color: #333;
+}
+
+#currentDepartment {
+    margin-bottom: 12px;
+
+    color: #666;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#currentDate {
+    color: #555;
+    font-size: 15px;
+
+    margin-bottom: 4px;
+}
+
+#lastSaved {
+    color: #999;
+    font-size: 15px;
+
+    margin-bottom: 20px;
+}
+
+/* ===========================
+   TEMPLATES PANEL
+=========================== */
+
+.templates-btn {
+    position: fixed;
+    font-size: 17px;
+    top: 15px;
+    right: 15px;
+    z-index: 999;
+
+    transition: opacity .25s ease, transform .25s ease;
+}
+
+.templates-panel {
+    position: fixed;
+    top: 0;
+    right: -40%;
+    width: 40%;
+    max-width: 500px;
+    height: 100vh;
+    background: #f8f9fa;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+    transition: right .3s ease;
+    z-index: 998;
+}
+
+.templates-panel.active {
+    right: 0;
+}
+
+.templates-panel h3 {
+
+    border-left: 4px solid #0078d4;
+
+    padding: 12px;
+
+    color: #374151;
+
+    font-size: 16px;
+
+    margin-top: 28px;
+    margin-bottom: 14px;
+
+    
+}
+
+body.templates-open .main-content {
+    width: 60%;
+    margin-right: 40%;
+}
+
+.templates-close {
+    margin-bottom: 20px;
+}
+
+.template-card {
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.template-card:hover {
+    border-color: #adb5bd;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.05);
+
+    transform: translateY(-1px);
+}
+
+.template-content {
+    color:#777;
+    flex: 1;
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+.template-content p {
+    white-space: pre-line;
+}
+
+.template-title {
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+
+    margin-bottom: 6px;
+}
+
+.copy-btn {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+
+.dark-mode {
+    background: #1e1e1e;
+    color: #e4e4e4;
+}
+
+.dark-mode .card {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #e4e4e4;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+    color: #999;
+}
+
+.dark-mode button {
+    background: #3a3a3a;
+    color: white;
+    border: 1px solid #555;
+}
+
+.dark-mode button:hover {
+    background: #4a4a4a;
+}
+
+.dark-mode .sidebar {
+    background: #252526;
+}
+
+.dark-mode .progress-bar {
+    background: #232428;
+    border: 1px solid #555;
+}
+
+.dark-mode #progressFill {
+    background: var(--discord-accent);
+
+    box-shadow:
+        0 0 12px rgba(88,101,242,.4);
+}
+
+/* Main title */
+.dark-mode .main-content h1 {
+    color: #ffffff;
+}
+
+/* Department */
+.dark-mode #currentDepartment {
+    color: #d4d4d4;
+}
+
+/* Dates */
+.dark-mode #currentDate {
+    color: #c0c0c0;
+}
+
+/* Last saved */
+.dark-mode #lastSaved {
+    color: #a0a0a0;
+}
+
+/* Progress numbers */
+.dark-mode #progressPercent {
+    color: #ffffff;
+}
+
+.dark-mode #minutesProduced {
+    color: #b0b0b0;
+}
+
+/* General subtitles */
+.dark-mode .subtitle,
+.dark-mode .saved-info {
+    color: #b0b0b0;
+}
+
+.dark-mode .templates-panel {
+    background: #252526;
+    border-left: 1px solid #404040;
+}
+
+.dark-mode .templates-panel h3 {
+    color: #e4e4e4;
+}
+
+.dark-mode .template-card {
+    background: #2d2d30;
+    border-color: #404040;
+}
+
+.dark-mode .template-title {
+    color: #ffffff;
+}
+
+.dark-mode .template-content {
+    color: #c8c8c8;
+}
+
+.dark-mode .template-card:hover {
+    border-color: #5865f2;
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.25);
+}
