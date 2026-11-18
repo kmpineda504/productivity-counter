@@ -1,13 +1,41 @@
+// DOM
+const DOM = {
+    //Productivity
+    progressFill: document.getElementById("progressFill"),
+    progressPercent: document.getElementById("progressPercent"),
+    minutesProduced: document.getElementById("minutesProduced"),
+
+     // Main UI
+    cardsContainer: document.getElementById("cardsContainer"),
+    currentDepartment:
+        document.getElementById("currentDepartment"),
+    currentDate:
+        document.getElementById("currentDate"),
+
+    // Navigation
+    menuButton:
+        document.getElementById("menuButton"),
+
+    sidebar:
+        document.getElementById("sidebar"),
+    
+    // Save status
+    lastSaved: document.getElementById("lastSaved")
+};
+
 
 const savedTime = localStorage.getItem('lastSavedTime');
   if (savedTime) {
-  document.getElementById('lastSaved').innerText =
-  "Last saved: " + savedTime;
+  DOM.lastSaved.innerText =
+    "Last saved: " + savedTime;
 }
 
 
+const DAILY_TARGET = 435;
+
+
+// Update Progress Bar
 function updateProductivityProgress() {
-  const DAILY_TARGET = 435;
 
   let producedMinutes = 0;
 
@@ -18,13 +46,14 @@ function updateProductivityProgress() {
     });
   });
 
+  const fill = DOM.progressFill;
+
   const percent = Math.min(
     (producedMinutes / DAILY_TARGET) * 100,
     100
   );
 
-  const fill = document.getElementById("progressFill");
-
+  
   if (percent < 50) {
     fill.style.background = "#d83b01";
   } else if (percent < 80) {
@@ -33,14 +62,18 @@ function updateProductivityProgress() {
     fill.style.background = "#107c10";
   }
 
-  document.getElementById("progressFill").style.width =`${percent}%`;
+  fill.style.width = `${percent}%`;
 
-  document.getElementById("progressPercent").innerText =`${Math.round(percent)}%`;
+  DOM.progressPercent.innerText =
+    `${Math.round(percent)}%`;
 
-  document.getElementById("minutesProduced").innerText =`${producedMinutes.toFixed(1)} / ${DAILY_TARGET} productive minutes`;
+  DOM.minutesProduced.innerText =
+    `${producedMinutes.toFixed(1)} / ${DAILY_TARGET} productive minutes`;
+
 }
 
 let currentDepartment = localStorage.getItem('department') || 'cargo';
+
 
 // Load saved data
 const savedData = JSON.parse(localStorage.getItem('departmentCounters')) || {};
@@ -55,7 +88,7 @@ Object.keys(departments).forEach(dep => {
 
 
 function renderCards() {
-  const container = document.getElementById('cardsContainer');
+  const container = DOM.cardsContainer;
   container.innerHTML = '';
 
   departments[currentDepartment].forEach(counter => {
@@ -133,7 +166,8 @@ function displayCurrentDate() {
     year: 'numeric'
   });
 
-  document.getElementById('currentDate').innerText = formattedDate;
+  DOM.currentDate.innerText =
+    formattedDate;
 }
 
 
@@ -155,7 +189,7 @@ function switchDepartment(dep) {
 
 
 function updateDepartmentTitle() {
-  const title = document.getElementById('currentDepartment');
+  const title = DOM.currentDepartment;
 
   const names = {
     cargo: '📦 Cargo Unit',
@@ -168,16 +202,18 @@ function updateDepartmentTitle() {
 }
 
 
-const menu = document.getElementById('sidebar');
+const menu = DOM.sidebar;
 
-document.getElementById('menuButton').addEventListener('click', toggleMenu);
+DOM.menuButton
+    .addEventListener('click', toggleMenu);
 
 
 
 function toggleMenu() {
   menu.classList.toggle('active');
 
-  document.getElementById('menuButton').classList.toggle('hidden');
+  DOM.menuButton
+    .classList.toggle('hidden');
 }
 
 
@@ -194,8 +230,8 @@ document.addEventListener('click', function (event) {
     if (!isClickInsideMenu && !isMenuButton) {
 
         menu.classList.remove('active');
-        document.getElementById('menuButton')
-            .classList.remove('hidden');
+        DOM.menuButton
+          .classList.remove('hidden');
     }
 });
 
@@ -231,6 +267,8 @@ function importData() {
   }
 }
 
+
+
 function saveCounters() {
     localStorage.setItem('departmentCounters', JSON.stringify(departments));
     localStorage.setItem('department', currentDepartment);
@@ -239,7 +277,7 @@ function saveCounters() {
     
     localStorage.setItem('lastSavedTime', timestamp);
     
-    document.getElementById("lastSaved").innerText =
+    DOM.lastSaved.innerText =
     "Last saved: " + timestamp;
 }
 
@@ -395,7 +433,8 @@ function copyTemplate(text) {
 
 document.getElementById('collapseBtn').addEventListener('click', function () {
     menu.classList.remove('active');
-    document.getElementById('menuButton').classList.remove('hidden');
+    DOM.menuButton
+      .classList.remove('hidden');
 });
 
 
