@@ -1,4 +1,4 @@
-// DOM
+/* ------------ DOM ------------ */
 const DOM = {
     //Productivity
     progressFill: document.getElementById("progressFill"),
@@ -22,13 +22,6 @@ const DOM = {
     // Save status
     lastSaved: document.getElementById("lastSaved")
 };
-
-
-const savedTime = localStorage.getItem('lastSavedTime');
-  if (savedTime) {
-  DOM.lastSaved.innerText =
-    "Last saved: " + savedTime;
-}
 
 
 const DAILY_TARGET = 435;
@@ -72,11 +65,56 @@ function updateProductivityProgress() {
 
 }
 
-let currentDepartment = localStorage.getItem('department') || 'cargo';
 
 
-// Load saved data
-const savedData = JSON.parse(localStorage.getItem('departmentCounters')) || {};
+/* ------------ STORAGE ------------ */
+
+function loadDepartment() {
+  return localStorage.getItem('department')
+    || 'cargo';
+}
+
+// load current department
+let currentDepartment = loadDepartment();
+
+function loadCounters() {
+  
+  try {
+    return JSON.parse(
+      localStorage.getItem('departmentCounters')
+    ) || {};
+  }
+  
+  catch (error) {
+    console.error(
+      "Failed to load department counters:",
+      error
+    );
+
+    return {};
+  }
+}
+
+// load saved data
+const savedData = loadCounters();
+
+
+function loadLastSavedTime() {
+  return localStorage.getItem(
+    "lastSavedTime"
+  );
+}
+
+// load saved time
+const savedTime = loadLastSavedTime();
+
+
+if (savedTime) {
+  DOM.lastSaved.innerText =
+    "Last saved: " + savedTime;
+}
+
+
 Object.keys(departments).forEach(dep => {
   if (savedData[dep]) {
     departments[dep] = savedData[dep];
@@ -84,9 +122,7 @@ Object.keys(departments).forEach(dep => {
 });
 
 
-
-
-
+/* ------------ RENDERING ------------ */
 function renderCards() {
   const container = DOM.cardsContainer;
   container.innerHTML = '';
