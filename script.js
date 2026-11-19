@@ -33,6 +33,15 @@ const DOM = {
     lastSaved: document.getElementById("lastSaved")
 };
 
+/* ---------------- APP STATE ---------------- */
+const AppState = {
+  currentDepartment: loadDepartment(),
+
+  darkMode: localStorage.getItem("darkMode") === "true",
+
+  departments: departments
+};
+
 
 /* ---------------- STORAGE ---------------- */
 
@@ -40,9 +49,6 @@ function loadDepartment() {
   return localStorage.getItem('department')
     || 'cargo';
 }
-
-// load current department
-let currentDepartment = loadDepartment();
 
 function loadCounters() {
   
@@ -76,8 +82,11 @@ function loadLastSavedTime() {
 const savedTime = loadLastSavedTime();
 
 function saveCounters() {
-  localStorage.setItem('departmentCounters', JSON.stringify(departments));
-  localStorage.setItem('department', currentDepartment);
+  localStorage.setItem(
+    'departmentCounters', 
+    JSON.stringify(AppState.departments)
+  );
+  localStorage.setItem('department', AppState.currentDepartment);
 
   const timestamp = new Date().toLocaleTimeString();
   
@@ -94,9 +103,9 @@ if (savedTime) {
 }
 
 
-Object.keys(departments).forEach(dep => {
+Object.keys(AppState.departments).forEach(dep => {
   if (savedData[dep]) {
-    departments[dep] = savedData[dep];
+    AppState.departments[dep] = savedData[dep];
   }
 });
 
@@ -107,7 +116,7 @@ function updateProductivityProgress() {
 
   let producedMinutes = 0;
 
-  Object.values(departments).forEach(department => {
+  Object.values(AppState.departments).forEach(department => {
     department.forEach(task => {
       const minutes = productivityValues[task.id] || 0;
       producedMinutes += task.value * minutes;
@@ -149,7 +158,7 @@ function renderCards() {
   
   container.innerHTML = '';
 
-  departments[currentDepartment].forEach(counter => {
+  AppState.departments[AppState.currentDepartment].forEach(counter => {
     const card = document.createElement('div');
     
     card.className = 'card';
@@ -178,7 +187,7 @@ function renderTemplates() {
   container.innerHTML = "";
 
   const departmentTemplates =
-    templates[currentDepartment];
+    templates[AppState.currentDepartment];
 
   if (!departmentTemplates) {
     container.innerHTML =
@@ -240,7 +249,7 @@ function updateDepartmentTitle() {
 
   };
 
-  title.innerText = names[currentDepartment];
+  title.innerText = names[AppState.currentDepartment];
 }
 
 // Main application render
@@ -254,7 +263,7 @@ function renderApp() {
 
 /* ---------------- COUNTERS ---------------- */
 function increment(type) {
-  const counter = departments[currentDepartment].find(c => c.id === type);
+  const counter = AppState.departments[AppState.currentDepartment].find(c => c.id === type);
   counter.value++;
   
   saveCounters();
@@ -262,7 +271,7 @@ function increment(type) {
 }
 
 function decrement(type) {
-  const counter = departments[currentDepartment].find(c => c.id === type);
+  const counter = AppState.departments[AppState.currentDepartment].find(c => c.id === type);
   counter.value = Math.max(0, counter.value - 1);
   
   saveCounters();
@@ -275,7 +284,7 @@ function resetCounters() {
     return;
   }
 
-  departments[currentDepartment].forEach(c => c.value = 0);
+  AppState.departments[AppState.currentDepartment].forEach(c => c.value = 0);
   
   saveCounters();
   renderApp();
@@ -284,7 +293,7 @@ function resetCounters() {
 
 /* ---------------- DEPARTMENTS ---------------- */
 function switchDepartment(dep) {
-  currentDepartment = dep;
+  AppState.currentDepartment = dep;
 
   saveCounters();
   renderApp();
@@ -328,8 +337,8 @@ document.addEventListener('click', function (event) {
 /* ---------------- IMPORT / EXPORT ---------------- */
 function exportData() {
   const data = {
-    department: currentDepartment,
-    counters: departments
+    department: AppState.currentDepartment,
+    counters: AppState.departments
   };
 
   const json = JSON.stringify(data);
@@ -347,12 +356,19 @@ function importData() {
  
   try {
     const parsed = JSON.parse(input);
-    currentDepartment = parsed.department;
-    Object.assign(departments, parsed.counters);
+    AppState.currentDepartment = parsed.department;
+
+    Object.assign(
+      AppState.departments, 
+      parsed.counters
+    );
+
     saveCounters();
     renderApp();
     alert("Data restored ✅");
-  } catch (e) {
+  } 
+  
+  catch (e) {
     alert("Invalid data ❌");
   }
 }
@@ -444,23 +460,27 @@ function displayCurrentDate() {
 
 
 /* ---------------- THEME ---------------- */
-const darkMode = localStorage.getItem("darkMode");
 
-if (darkMode === "true") {
+if (AppState.darkMode) {
   document.body.classList.add("dark-mode");
   themeToggle.textContent = "☀️ Light Mode";
 }
 
 themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
+  AppState.darkMode =
+    !AppState.darkMode;
+
+  document.body.classList.toggle(
+    "dark-mode"
+  );
 
   localStorage.setItem(
     "darkMode",
-    document.body.classList.contains("dark-mode")
+    AppState.darkMode
   );
 
   themeToggle.textContent =
-    document.body.classList.contains("dark-mode")
+    AppState.darkMode
       ? "☀️ Light Mode"
       : "🌙 Dark Mode";
 });
