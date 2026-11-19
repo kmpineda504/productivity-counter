@@ -168,14 +168,24 @@ function renderCards() {
 
       <div class="actions">
         <span class="counter">${counter.value}</span>
-        <button onclick="increment('${counter.id}')">+</button>
-        <button class="decrement-btn" onclick="decrement('${counter.id}')">−</button>
+
+        <button
+          data-action="increment"
+          data-id="${counter.id}">
+          +
+        </button>
+
+        <button
+          class="decrement-btn"
+          data-action="decrement"
+          data-id="${counter.id}">
+          −
+        </button>
       </div>
     `;
 
     container.appendChild(card);
   });
-
 }
 
 function renderTemplates() {
@@ -225,8 +235,9 @@ function renderTemplates() {
 
           </div>
 
-          <button class="copy-btn"
-            onclick="copyTemplate(\`${template.text}\`)">
+          <button
+            class="copy-btn"            
+            data-text="${template.text}">
 
             <i class="fa-regular fa-copy"></i>
           </button>
@@ -330,6 +341,56 @@ document.addEventListener('click', function (event) {
   if (!isClickInsideMenu && !isMenuButton) {
     menu.classList.remove('active');
       DOM.menuButton.classList.remove('hidden');
+  }
+});
+
+/* ---------------- EVENTS ---------------- */
+// card actions (increment/decrement)
+DOM.cardsContainer.addEventListener(
+  "click",
+  function(event) {
+
+    const button =
+      event.target.closest("button");
+
+    if (!button) return;
+
+    const action =
+      button.dataset.action;
+
+    const id =
+      button.dataset.id;
+
+    if (action === "increment") {
+      increment(id);
+    }
+
+    if (action === "decrement") {
+      decrement(id);
+    }
+  }
+);
+
+DOM.templatesContainer.addEventListener(
+  "click",
+  function(event) {
+
+    const button =
+      event.target.closest(".copy-btn");
+
+    if (!button) return;
+
+    copyTemplate(
+      button.dataset.text
+    );
+  }
+);
+
+// keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key === 's') {
+    e.preventDefault();
+    exportData();
   }
 });
 
@@ -483,15 +544,6 @@ themeToggle.addEventListener("click", () => {
     AppState.darkMode
       ? "☀️ Light Mode"
       : "🌙 Dark Mode";
-});
-
-
-/* ---------------- KEYBOARD SHORTCUTS ---------------- */
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.key === 's') {
-    e.preventDefault();
-    exportData();
-  }
 });
 
 
